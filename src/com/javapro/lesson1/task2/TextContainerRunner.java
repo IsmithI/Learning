@@ -20,7 +20,7 @@ public class TextContainerRunner {
             if(method.isAnnotationPresent(Save.class)) {
                 Save tmp = method.getAnnotation(Save.class);
                 if (isUnix())
-                    method.invoke(c, "/home/smith/task2.txt", "Hi! This is task 2 for javapro and you're unix user!");
+                    method.invoke(c, "/home/task2.txt", "Hi! This is task 2 for javapro and you're unix user!");
                 else if (isWindows())
                     method.invoke(c, "C:\\task2.txt", "Hi! This is task 2 for javapro and you're windows user!");
             }
