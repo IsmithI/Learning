@@ -3,6 +3,9 @@ package com.javapro.lesson1.task2;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static com.sun.javafx.PlatformUtil.isUnix;
+import static com.sun.javafx.PlatformUtil.isWindows;
+
 /**
  * Created by smith on 16.12.16.
  */
@@ -16,7 +19,10 @@ public class TextContainerRunner {
         for (Method method : methods) {
             if(method.isAnnotationPresent(Save.class)) {
                 Save tmp = method.getAnnotation(Save.class);
-                method.invoke(c, "/home/smith/task2.txt", "some text");
+                if (isUnix())
+                    method.invoke(c, "/home/smith/task2.txt", "Hi! This is task 2 for javapro and you're unix user!");
+                else if (isWindows())
+                    method.invoke(c, "C:\\task2.txt", "Hi! This is task 2 for javapro and you're windows user!");
             }
         }
     }
