@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.sun.javafx.PlatformUtil.isUnix;
 import static com.sun.javafx.PlatformUtil.isWindows;
@@ -16,12 +17,14 @@ public class SeDerializerRunner {
     public static String filename;
 
     public static void main(String[] args) throws IOException, IllegalAccessException, ClassNotFoundException {
-        if (isWindows()) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter username: ");
+        String uname = sc.nextLine();
+
+        if (isWindows())
             filename = "C:\\tmp.out";
-        }
-        else if (isUnix()) {
-            filename = "/home/"
-        }
+        else if (isUnix())
+            filename = "/home/"+uname+"/tmp.out";
 
         TestClass tc = new TestClass();
 
@@ -35,13 +38,18 @@ public class SeDerializerRunner {
                 tmp.add(field);
             }
         }
-        serialize(tmp, tc);
 
-        deserialize("/home/smith/tmp.out");
+        try {
+            serialize(tmp, tc);
+            deserialize(filename);
+        }
+        finally {
+            sc.close();
+        }
     }
 
     public static void serialize(List<Field> fields, TestClass tc) throws IOException, IllegalAccessException {
-        FileOutputStream fOut = new FileOutputStream("/home/smith/tmp.out");
+        FileOutputStream fOut = new FileOutputStream(filename);
         ObjectOutputStream oOut = new ObjectOutputStream(fOut);
         for (Field field : fields) {
             oOut.writeObject(field.get(tc));
